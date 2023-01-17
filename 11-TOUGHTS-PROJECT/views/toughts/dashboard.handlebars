@@ -1,0 +1,24 @@
+<div class="dashboard">
+    <div class="title-container">
+        <h2>Dasboard </h2>
+        <a href="/toughts/create" class="btn">Criar Pensamento</a>
+    </div>
+    <h3><i>{{this.UserName}}</i>, Esses são os seus Pensamentos</h3>
+    <ul>
+        {{#each toughts}}
+            <li>
+                <span class="label">{{this.title}}</span>
+                <span class="actions">
+                    <a href="/toughts/edit/{{this.id}}" class="btn">Editar</a>
+                    <form action="/toughts/remove" method="POST">
+                        <input type="hidden" name="id" value="{{this.id}}">
+                        <input type="submit" class="btn" value="Excluir">
+                    </form>
+                </span>
+            </li>
+        {{/each}}
+    </ul>
+    {{#if emptyToughts}}
+        <p>Você ainda não cadastrou nenhum pensamento, clique <a href="/toughts/create">Aqui</a> para criar..</p>
+    {{/if}}
+</div>
