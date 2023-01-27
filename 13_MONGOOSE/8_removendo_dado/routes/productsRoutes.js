@@ -1,0 +1,24 @@
+const express = require('express')
+const router = express.Router()
+
+const ProductController = require('../controllers/ProductController')
+
+//pesquisa e exclui
+router.post('/remove/:id', ProductController.removeProduct)
+
+//edita
+router.get('/edit/:id', ProductController.editProduct)
+router.post('/edit', ProductController.editProductPost)
+
+//acessa o formulário de inclusão
+router.get('/create', ProductController.createProduct)
+//grava as informações digitadas
+router.post('/create', ProductController.createProductPost)
+
+//pesquisa um produto
+router.get('/:id', ProductController.getProduct)
+
+ //acessa a home
+ router.get('/', ProductController.showProducts)
+
+module.exports = router
