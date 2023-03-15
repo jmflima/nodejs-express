@@ -90,6 +90,7 @@ module.exports = class UserController {
             res.status(422).json({ message: 'A senha é obrigatório' })
             return
         }
+
         //check if user exist
         const user = await User.findOne({email: email})
         if(!user){
@@ -118,17 +119,32 @@ module.exports = class UserController {
 
         if (req.headers.authorization) {
             const token = getToken(req)
-            console.log(token)
             const decoded = jwt.verify(token, 'nossosecret')
 
             currentUser = await User.findById(decoded.id)
 
-//            currentUser.password = undefined
+            currentUser.password = undefined
 
         }else{
             currentUser = null
         }
 
         res.status(200).send(currentUser)
+    }
+
+    static async getUserById(req, res){
+
+        const id = req.params.id
+
+        const user = await User.findById(id).select('-password')
+
+        if(!user){
+            res.status(422).json({ 
+                message: 'Usuário não existe' 
+            })
+            return 
+        }
+        res.status(200).json({ user })
+
     }
 }
