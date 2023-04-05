@@ -1,10 +1,12 @@
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const mongoose = require('mongoose')
 
 //helpers
 const createUserToken = require('../helpers/create-user-token')
 const getToken = require("../helpers/get-token")
+const { sanitizeFilter } = require('mongoose')
 
 module.exports = class UserController {
 
@@ -73,7 +75,7 @@ module.exports = class UserController {
 
             await createUserToken(newUser, req, res)
         }catch(err){
-            res.status(500).jason({ message: err})
+            res.status(500).json({ message: err})
         }
           
     }
@@ -149,10 +151,14 @@ module.exports = class UserController {
     }
 
     static async editUser(req, res){
-        res.status(200).json({ 
-            message: 'Deu tudo certo' 
-        })
-        return 
 
+        try{
+            const id = mongoose.Types.ObjectId(req.params.id)
+            const user = await User.findById((id))
+            res.status(200).json({user})
+
+        }catch(err){
+            res.status(500).json({ message: "Usuário inválido"})
+        }
     }
 }

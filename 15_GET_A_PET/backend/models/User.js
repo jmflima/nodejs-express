@@ -5,6 +5,11 @@ const User = mongoose.model(
     'User',
     new Schema(
         {
+            id:
+            {
+                type:Schema.Types.ObjectId, 
+                ref:'User'
+            },            
             name: {
                 type: String,
                 required: true
