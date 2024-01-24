@@ -6,6 +6,7 @@ const app = express()
 //config Json response
 app.use(express.json())
 
+//Save CORS
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
 
 //public folder for images
