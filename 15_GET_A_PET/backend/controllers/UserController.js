@@ -175,7 +175,9 @@ module.exports = class UserController {
 
         const {name, email, phone, password, confirmpassword} = req.body
 
-        let image = ''
+        if(req.file) {
+            user.image = req.file.filename
+        }
 
         if(!name){
             res.status(422).json({ message: 'O nome é obrigatório' })
@@ -226,7 +228,7 @@ module.exports = class UserController {
                 message: "Usuário atualizado com sucesso" 
             }) 
         } catch (err) {
-            res.status(500).json({ message: err })
+            res.status(500).json({ message: "Usar apenas as extensões jpg ou png" })
             return
         }
 
