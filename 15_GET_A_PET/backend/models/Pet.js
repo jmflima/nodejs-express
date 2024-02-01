@@ -21,7 +21,7 @@ const Pet = mongoose.model(
                 type: String,
                 required: true,
             },
-            color: {
+            cor: {
                 type: String,
                 required: true,
             },
@@ -32,8 +32,8 @@ const Pet = mongoose.model(
             available: {
                 type: Boolean,
             },
-            user: object,
-            adopter: object,
+            user: Object,
+            adopter: Object,
         },
         {timestamps: true },
     )

@@ -1,0 +1,72 @@
+const Pet = require("../models/Pet")
+
+//helpers
+const getToken = require("../helpers/get-token")
+const getUserByToken = require("../helpers/get-user-by-token")
+
+module.exports = class PetController {
+
+    //create a Pet
+    static async create(req, res) {
+        
+        const {nome, idade, peso, raca, cor } = req.body
+
+        const available = true
+
+        //upload images
+
+        //validations
+        if(!nome) {
+            res.status(422).json({ message: "O nome é obrigatório" })
+            return
+        }
+        if(!idade) {
+            res.status(422).json({ message: "A idade é obrigatória" })
+            return
+        }
+        if(!peso) {
+            res.status(422).json({ message: "O peso é obrigatório" })
+            return
+        }
+        if(!raca) {
+            res.status(422).json({ message: "A raca é obrigatória" })
+            return
+        }
+        if(!cor) {
+            res.status(422).json({ message: "A cor é obrigatória" })
+            return
+        }
+
+        //pegando token do dono do pet
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+
+        //criando um pet com os dados do seu dono
+        const pet = new Pet({
+            nome,
+            idade,
+            peso,
+            raca,
+            cor,
+            available,
+            images: [],
+            user: {
+                _id: user._id,
+                name: user.name,
+                image: user.image,
+                phone: user.phone,
+            },
+        })
+
+        try {
+            const newPet = await pet.save()
+            res.status(201).json({ message: "Pet cadastrado com sucesso", 
+                newPet 
+            })
+        } catch (error) {
+            res.status(500).json({ message: error })
+        }
+
+
+    }
+}
