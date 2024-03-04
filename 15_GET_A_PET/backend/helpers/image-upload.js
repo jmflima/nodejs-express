@@ -2,20 +2,22 @@ const multer = require("multer")
 const path = require("path")
 
 //destination to store the images
-
 const imageStorage = multer.diskStorage({
     destination: function(req, file, cb) {
         let folder = ""
 
-        if(req.baseUrl.includes("users")) {
+        if(req.baseUrl.includes('users')) {
             folder = "users"
         }else if(req.baseUrl.includes("pets")) {
             folder = "pets"
         }
         cb(null, `public/images/${folder}`)
     },
-    filename: function(req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname))
+    filename: (req, file, cb) => {
+        cb(null, 
+            Date.now() + 
+            String(Math.floor(Math.random() * 100)) + 
+            path.extname(file.originalname))
         //resultado 293489238942232389.jpg
     },
 })
@@ -24,8 +26,8 @@ const imageStorage = multer.diskStorage({
 const imageUpload = multer({
     storage: imageStorage,
     fileFilter(req, file, cb) {
-        if(!file.originalname.match(/\.(jpg|png)$/)) {
-            return cb(new Error("Só pode usar as extenções jpg ou png"))
+        if(!file.originalname.match(/\.(png|jpg)$/)) {
+            return cb(new Error("Por favor, envie apenas jpg ou png"))
         }
         cb(undefined, true)
     }
